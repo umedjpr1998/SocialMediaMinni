@@ -48,11 +48,13 @@ function SignUp() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/signup', {
-        name: userData.name,
-        email: userData.email,
-        password: userData.password,
-      });
+      // const response = await axios.post('http://localhost:5000/api/signup',
+      const response = await axios.post('https://socialmediaminni.onrender.com/api/signup',
+        {
+          name: userData.name,
+          email: userData.email,
+          password: userData.password,
+        });
 
       console.log(response.data); // optional
       setError('');

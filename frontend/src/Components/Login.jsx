@@ -27,7 +27,8 @@ function Login() {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:5000/api/login', credentials);
+      const response = await axios.post('https://socialmediaminni.onrender.com/api/login', credentials);
+      // const response = await axios.post('http://localhost:5000/api/login', credentials);
 
       console.log('Login success:', response.data);
       localStorage.setItem('isLoggedIn', 'true');

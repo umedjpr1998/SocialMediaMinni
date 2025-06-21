@@ -30,10 +30,12 @@ function AddPhotoPage() {
       formData.append('title', photoTitle);
 
       try {
-        const response = await fetch('http://localhost:5000/api/photos/upload', {
-          method: 'POST',
-          body: formData,
-        });
+        // const response = await fetch('http://localhost:5000/api/photos/upload',
+        const response = await fetch('https://socialmediaminni.onrender.com/api/photos/upload',
+          {
+            method: 'POST',
+            body: formData,
+          });
 
         const data = await response.json();
 
