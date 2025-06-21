@@ -15,6 +15,7 @@ function Login() {
   const [newPassword, setNewPassword] = useState('');
   const [emailForOtp, setEmailForOtp] = useState('');
   const [otpSent, setOtpSent] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,6 +26,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true); // Start loading
 
     try {
       const response = await axios.post('https://socialmediaminni.onrender.com/api/login', credentials);
@@ -47,6 +49,8 @@ function Login() {
       navigate('/home');
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid credentials');
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -88,6 +92,28 @@ function Login() {
       setError('Error verifying OTP. Please try again later.');
     }
   };
+
+
+  const spinnerStyle = {
+    border: '2px solid #f3f3f3',
+    borderTop: '2px solid #3498db',
+    borderRadius: '50%',
+    width: '14px',
+    height: '14px',
+    animation: 'spin 1s linear infinite',
+    display: 'inline-block',
+    marginRight: '8px',
+    verticalAlign: 'middle',
+  };
+
+  // Then add this inside a <style> tag manually in your component (only once)
+  <style>
+    {`@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }`}
+  </style>
+
 
   const styles = {
     container: {
@@ -204,9 +230,17 @@ function Login() {
                   <FontAwesomeIcon icon={passwordVisible ? faEye : faEyeSlash} />
                 </button>
               </div>
-              <button type="submit" style={styles.button}>
-                Log in
+              <button type="submit" style={styles.button} disabled={loading}>
+                {loading ? (
+                  <>
+                    <span style={spinnerStyle}></span> Logging in...
+                  </>
+                ) : (
+                  'Log in'
+                )}
               </button>
+
+
             </form>
 
             <div style={styles.separator}>

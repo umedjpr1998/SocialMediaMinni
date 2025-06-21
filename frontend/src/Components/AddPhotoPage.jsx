@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { PhotoContext } from './PhotoContext';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import './addphoto.css';
 import { ToastContainer, toast } from 'react-toastify'; // Import ToastContainer and toast
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS for toast notifications
 
@@ -11,6 +12,7 @@ function AddPhotoPage() {
   const [photoTitle, setPhotoTitle] = useState('');
   const [user, setUser] = useState('');
   const { setPhotos } = useContext(PhotoContext);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // Redirect to login if the user is not authenticated
@@ -28,6 +30,8 @@ function AddPhotoPage() {
       const formData = new FormData();
       formData.append('photo', photoFile);
       formData.append('title', photoTitle);
+
+      setLoading(true); // Start loading
 
       try {
         // const response = await fetch('http://localhost:5000/api/photos/upload',
@@ -76,6 +80,8 @@ function AddPhotoPage() {
         }
       } catch (error) {
         console.error('Upload error:', error);
+      } finally {
+        setLoading(false); // Stop loading
       }
     } else {
       alert("Please select a photo and enter a title");
@@ -185,9 +191,17 @@ function AddPhotoPage() {
                     addPhoto();
                   }}
                   style={{ fontFamily: 'cursive' }}
+                  disabled={loading}
                 >
-                  Add Photo
+                  {loading ? (
+                    <>
+                      <span className="spinner" /> Uploading...
+                    </>
+                  ) : (
+                    'Add Photo'
+                  )}
                 </button>
+
               </div>
             </div>
           </form>
