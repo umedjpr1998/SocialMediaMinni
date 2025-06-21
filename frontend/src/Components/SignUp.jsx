@@ -17,6 +17,7 @@ function SignUp() {
   const [error, setError] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -47,6 +48,8 @@ function SignUp() {
       return;
     }
 
+    setLoading(true); // Start loading
+
     try {
       // const response = await axios.post('http://localhost:5000/api/signup',
       const response = await axios.post('https://socialmediaminni.onrender.com/api/signup',
@@ -76,6 +79,8 @@ function SignUp() {
       } else {
         setError('Something went wrong. Please try again.');
       }
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -112,7 +117,17 @@ function SignUp() {
             <a href="#cookies" className="link">Cookies Policy</a>.
           </p>
 
-          <button className="button" type="submit">Sign Up</button>
+          <button className="button" type="submit" disabled={loading}>
+            {loading ? (
+              <>
+                <span className="spinner" /> Signing up...
+              </>
+            ) : (
+              'Sign Up'
+            )}
+
+          </button>
+
 
         </form>
         <div className="separator">
